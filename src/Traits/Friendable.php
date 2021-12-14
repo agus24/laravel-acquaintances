@@ -552,10 +552,14 @@ trait Friendable
         return $this->morphMany($friendshipGroupsModelName, 'friend');
     }
 
-    protected function getOrPaginate($builder, $perPage, array $fields = ['*'])
+    protected function getOrPaginate($builder, $perPage, array $fields = ['*'], boolean $cursor = false)
     {
         if ($perPage == 0) {
             return $builder->get($fields);
+        }
+
+        if ($cursor) {
+            return $builder->cursorPaginate($perPage, $fields);
         }
 
         return $builder->paginate($perPage, $fields);
